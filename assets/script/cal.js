@@ -12,9 +12,9 @@ class Calculator {
         this.operation = undefined;
     }
 
-    // DELETE NUMERS WRONGLY TYPED IN
+    // DELETE NUMBERS WRONGLY TYPED IN
     delete() {
-
+        this.currOperand = this.currOperand.toString().slice(0, -1)
     }
 
     /* ADD NUMBERS TO BE DISPLAYED FOR COMPUTATION
@@ -39,6 +39,7 @@ class Calculator {
     }
 
     // CALCULATE THE VALUE GIVEN
+    // CONVERT INPUT FROM STRING TO FLOAT AND USE SWITCH TO CHECK THE INPUT
     compute() {
         let cipher
         const prev = parseFloat(this.prevOperand)
@@ -57,14 +58,52 @@ class Calculator {
             case '÷':
                 cipher = prev / curr
                 break
+            default:
+                return
+        }
+
+        // SETTING THE RESULT OF THE COMPUTATION TO CURROPERAND
+        this.currOperand = cipher
+        this.operation = undefined
+        this.prevOperand = ''
+    }
+
+    // HELPER FUNCTION TO DISPLAY NUMBRS IN COMMA DELIMITED FORMAT
+    getDisplayNum(num) {
+        const strNum = num.toString()
+        const intDigits = parseFloat(strNum.split('.')[0])
+        const decimalDigits = strNum.split('.')[1]
+        let intDisplay
+        if (isNaN(intDigits)) {
+            intDisplay = ''
+        }
+        else {
+            intDisplay = intDigits.toLocaleString('en', {
+                maximumFractionDigits: 0
+            })
+        }
+        if (decimalDigits != null) {
+            return `${intDisplay}.${decimalDigits}`
+        }
+        else {
+            return intDisplay
         }
     }
 
     // UPDATE THE DISPLAY ON THE DISPLAY BANE
     updateDisplay() {
-        this.currText.innerText = this.currOperand
-        this.prevText.innerText = this.prevOperand
+        this.currText.innerText = this.getDisplayNum(this.currOperand)
+
+        // DISPLAYING THE INPUT + THE OPERAND
+        if (this.operation != null) {
+            this.prevText.innerText = 
+            `${this.getDisplayNum(this.prevOperand)} ${this.operation}`
+        }
+        else {
+            this.prevText.innerText = ''
+        }
     }
+
 }
 
 
@@ -88,6 +127,7 @@ numBtn.forEach(button => {
     })
 })
 
+// ADD EVENTLISTENER TO THE OPERATOR BTNS 
 opBtn.forEach(button => {
     button.addEventListener('click', () => {
         calculator.selectOperation(button.innerText)
@@ -95,7 +135,20 @@ opBtn.forEach(button => {
     })
 })
 
+// ADD EVENTLISTENER TO THE EQUALS BTN
 equalsBtn.addEventListener('click', button => {
     calculator.compute()
+    calculator.updateDisplay()
+})
+
+// ADD EVENTLISTENER TO THE EQUALS BTN
+clearBtn.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+})
+
+// ADD EVENTLISTENER TO THE DELETE BTN
+delBtn.addEventListener('click', button => {
+    calculator.delete()
     calculator.updateDisplay()
 })
