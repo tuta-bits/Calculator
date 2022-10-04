@@ -37,3 +37,7 @@ Credits:
 
 	ES6 Syntax:
 	  w3school (https://www.w3schools.com)
+	  
+	Stackoverflow:
+	  (https://stackoverflow.com/questions/30922008/calculate-percentage-javascript)
+
