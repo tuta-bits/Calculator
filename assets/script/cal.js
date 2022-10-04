@@ -5,6 +5,11 @@ class Calculator {
         this.clear();
     }
 
+    // SQUARE-ROOT FUNCTION
+    sqrt() {
+        this.currOperand = Math.sqrt(this.currOperand)
+    }
+
     // CLEAR ALL INPUT DATA ON DISPLAY
     clear() {
         this.currOperand = '';
@@ -57,6 +62,12 @@ class Calculator {
                 break
             case '÷':
                 cipher = prev / curr
+                break
+            case '%':
+                cipher = (parseFloat(prev) * parseFloat(curr)) / 100
+                break
+            case '^':
+                cipher = Math.pow(prev, curr)
                 break
             default:
                 return
@@ -115,6 +126,7 @@ const delBtn = document.querySelector('[data-del]');
 const clearBtn = document.querySelector('[data-clear]');
 const prevText = document.querySelector('[data-prev-op]');
 const currText = document.querySelector('[data-curr-op]');
+const sqrtBtn = document.querySelector('[data-sqrt]');
 
 const calculator = new Calculator(prevText, currText)
 
@@ -150,5 +162,11 @@ clearBtn.addEventListener('click', button => {
 // ADD EVENTLISTENER TO THE DELETE BTN
 delBtn.addEventListener('click', button => {
     calculator.delete()
+    calculator.updateDisplay()
+})
+
+// ADD EVENTLISTENER TO THE SQRT BTN
+sqrtBtn.addEventListener('click', button => {
+    calculator.sqrt()
     calculator.updateDisplay()
 })
